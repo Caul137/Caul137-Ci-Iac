@@ -47,7 +47,7 @@ resource "aws_iam_role" "tf-role"{
         }
         Effect = "Allow"
         Principal = {
-          Federated = "arn:aws:iam::403429280851:oidc-provider/token.actions.githubsercontent.com"
+          Federated = "arn:aws:iam::4034292808:oidc-provider/token.actions.githubsercontent.com"
         }
     }]
     Version = "2012-10-17"

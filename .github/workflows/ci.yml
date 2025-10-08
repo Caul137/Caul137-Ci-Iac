@@ -5,12 +5,15 @@ on:
     branches:
       - main
 
+permissions:
+  id-tokens: write
+  contents: read
+
 jobs:
 
   run-terraform:
     name: "Run terraform"
     runs-on: ubuntu-latest
-    
 
     steps:
 
@@ -20,8 +23,8 @@ jobs:
     - name: Configure aws credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-region: us-east-2
-        role-to-assume: ''
+        aws-region: ${{secrets.aws_region}}
+        role-to-assume: ${{secrets.role_to_assume}}
 
     - name: Setup terraform
       uses: hashicorp/setup-terraform@v3
@@ -38,4 +41,5 @@ jobs:
       run: terraform plan
 
     - name: Run terraform apply
+      if: github.ref === "refs/head/main" && github.event_name == "push"
       run: terraform apply -auto-approve
