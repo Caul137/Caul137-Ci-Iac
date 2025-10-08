@@ -10,8 +10,13 @@ jobs:
   run-terraform:
     name: "Run terraform"
     runs-on: ubuntu-latest
+    
 
     steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+
     - name: Configure aws credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:

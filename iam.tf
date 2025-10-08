@@ -27,10 +27,36 @@ resource "aws_iam_role" "app-runner-role" {
     }
    ]
   })
-  managed_policy_arns = [
-    "arn:aws:iam:aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  ]
+  # managed_policy_arns = [
+  #   "arn:aws:iam:aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  # ]
 }
+
+
+resource "aws_iam_role" "tf-role"{
+  name = "tf-role"
+
+  assume_role_policy = jsonencode({
+    Statement = [{
+        Action = "sts:AssumeRoleWithWebIdentity"
+        Condition = {
+          StringEquals = {
+            "token.actions.githubsercontent.com:aud" = "sts.amazon.com"
+            "token.actions.githubsercontent.com:sub" = "repo:Caul137/Ci-Iac:ref:refs/heads/main"
+          }
+        }
+        Effect = "Allow"
+        Principal = {
+          Federated = "arn:aws:iam::403429280851:oidc-provider/token.actions.githubsercontent.com"
+        }
+    }]
+    Version = "2012-10-17"
+  })
+  tags = {
+    IAC = "true"
+  }
+}
+
 
 
 
